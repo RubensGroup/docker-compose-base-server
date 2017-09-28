@@ -55,6 +55,9 @@ Vagrant.configure("2") do |config|
   #config.vm.synced_folder "U:/Users/roreyem/WebApp/RubyOnRails", "/var/www/RubyRails"
   #config.vm.synced_folder "U:/Users/roreyem/WebApp/PHP", "/var/www/PHP"
   #config.vm.synced_folder "U:/Users/roreyem/WebApp/JS", "/var/www/JS"
+  config.vm.synced_folder "/Users/rogerreyes/Downloads", "/home/vagrant/Downloads"
+  config.vm.synced_folder "/Users/rogerreyes/WebApp", "/home/vagrant/var/www"
+  config.vm.synced_folder "/Users/rogerreyes/ScriptsAndMore", "/home/vagrant/ScriptsAndMore"
   
 
   # Provider-specific configuration so you can fine-tune various
