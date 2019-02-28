@@ -146,4 +146,4 @@ docker-compose logs -f --tail 1000 app
 - [Network en Docker](https://docs.docker.com/network/network-tutorial-standalone/)
 - [Network Docker Compose](https://docker-k8s-lab.readthedocs.io/en/latest/docker/docker-compose.html)
 - [Dockerize App](https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose)
-- [Unifying Rails Environments](https://phraseapp.com/blog/posts/unifying-rails-environments-docker-compose/)unifying-rails-environments-docker-compose/)
+- [Unifying Rails Environments](https://phraseapp.com/blog/posts/unifying-rails-environments-docker-compose/unifying-rails-environments-docker-compose/)
