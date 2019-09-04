@@ -18,10 +18,12 @@ Es necesario crear la imagen base, desde la que se levantaran las imagenes docke
 cd ruby
 
 #se debe elegir la version de Ruby con la que se trabajará
-docker build . -t image-base-railsapp:ruby_2.5
+docker build . -t image-base-railsapp-ruby:2.5
+docker build . -t image-base-railsapp-ruby:2.6
 
 #Para revisar que la imagen se creó bien
-docker run -it --rm --name docker-instance-RANDOM image-base-railsapp:ruby_2.5 bash
+docker run -it --rm --name docker-instance-RANDOM image-base-railsapp-ruby:2.5 bash
+docker run -it --rm --name docker-instance-RANDOM image-base-railsapp-ruby:2.6 bash
 ```
 
 ### Rails WebApp
@@ -61,13 +63,13 @@ Para crear una aplicación Rails desde cero se puede hacer ejecutando la instanc
 # Crear la aplicación rails
 docker run -it --rm \
 -v $(pwd):/myrailsapp \
-image-base-railsapp:ruby_2.5 \
+image-base-railsapp-ruby:2.5 \
 rails new . --force --no-deps --database=mysql
 
 # Crear la aplicación rails con VueJS
 docker run -it --rm \
 -v $(pwd):/myrailsapp \
-image-base-railsapp:ruby_2.5 \
+image-base-railsapp-ruby:2.5 \
 rails new . --force --no-deps --database=mysql --webpack=vue
 ```
 
@@ -84,17 +86,17 @@ default: &default
 
 development:
   <<: *default
-  database:  <%= ENV['MYSQLDB_BDNAME'] %>_development
+  database:  <%= ENV['MYSQLDB_DATABASE_NAME'] %>_development
   ...
 
 test:
   <<: *default
-  database: <%= ENV['MYSQLDB_BDNAME'] %>_test
+  database: <%= ENV['MYSQLDB_DATABASE_NAME'] %>_test
   ...
 
 production:
   <<: *default
-  database: <%= ENV['MYSQLDB_BDNAME'] %>_production  
+  database: <%= ENV['MYSQLDB_DATABASE_NAME'] %>_production  
 ```
 
 #### 4 Lenvatar una instancia Docker con mi aplicación
@@ -106,7 +108,7 @@ docker run -it --rm \
 --network docker-compose-base-dev_backennetwork \
 --env-file .env.docker \
 -v $(pwd):/myrailsapp \
---name docker-instance-${PWD##*/}-$RANDOM image-base-railsapp:ruby_2.5
+--name docker-instance-${PWD##*/}-${RANDOM} image-base-railsapp-ruby:2.5
 
 ```
 

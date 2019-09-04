@@ -1,5 +1,5 @@
 #Docker para la App
-FROM ruby:2.5-slim-stretch
+FROM ruby:2.6.4-slim-stretch
 
 ENV LANG C.UTF-8
 
@@ -7,7 +7,7 @@ ENV LANG C.UTF-8
 #apt-get install -y build-essential libpq-dev nodejs gnupg2 nodejs-legacy  \
 RUN apt-get update -qq && \
     apt-get install -y build-essential libpq-dev gnupg2\
-    nano  mysql-client default-libmysqlclient-dev curl --no-install-recommends
+    nano git  mysql-client default-libmysqlclient-dev curl --no-install-recommends
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
