@@ -9,7 +9,7 @@ Es necesario levantar la batearía de servidores de docker-compose:
 ```
 #construir las imagenes de los motores de BD
 docker-compose build
-docker-compose up
+docker-compose up -d
 ```
 
 ### Creación de imagen base para desarrollo
