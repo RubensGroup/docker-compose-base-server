@@ -12,7 +12,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-### Creación de imagen base para desarrollo
+### Creación de imagen base para desarrollo con Ruby
 Es necesario crear la imagen base, desde la que se levantaran las imagenes docker en local:
 ```sh
 cd ruby
@@ -26,17 +26,65 @@ docker run -it --rm --name docker-instance-RANDOM image-base-railsapp-ruby:2.5 b
 docker run -it --rm --name docker-instance-RANDOM image-base-railsapp-ruby:2.6 bash
 ```
 
+### Creación de imagen base para desarrollo para una aplicación nueva.
+Subiremos la imagenes a Docker Hub para depués poder solo utilizarlas de manera pública.
+```sh
+#Docker image to a new project
+docker build . -t tundervirld/ruby-2.6.4:new-app-rails-5.2 -f Dockerfile
+docker push tundervirld/ruby-2.6.4:new-app-rails-5.2
+
+#Ejecutar una instancia docker para crear la aplicación
+#Se deberá crear la carpeta en la cual se quiere crear la apliación.
+docker run -it --rm \
+-v $(pwd):/myrailsapp \
+tundervirld/ruby-2.6.4:new-app-rails-5.2 \
+rails new . \
+--database mysql \
+--webpack
+```
+
+### Creación de imagen base para desarrollo de una aplicación existente.
+Subiremos la imagenes a Docker Hub para depués poder solo utilizarlas de manera pública.
+```sh
+#Docker image to a new project
+docker build . -t tundervirld/ruby-2.6.4:existing-app-rails-5.2
+docker push tundervirld/ruby-2.6.4:existing-app-rails-5.2
+
+#Ejecutar una instancia docker para levantar una aplicación existente
+#Levantar de manera simple la aplicación
+docker run -it --rm \
+-e APP_PORT=3000 \
+-e APP_SERVER_HOST=0.0.0.0 \
+-p 3666:3000 \
+-v $(pwd):/myrailsapp \
+--name docker-instance-${PWD##*/} \
+tundervirld/ruby-2.6.4:existing-app-rails-5.2
+
+#Levantar de manera simple la aplicación con la configuración completa, revisar sección Rails WebApp
+
+docker run -it --rm \
+-p 4001:3000 \
+--network docker-compose-base-dev_backennetwork \
+--env-file .env.docker \
+-v $(pwd):/myrailsapp \
+--name docker-instance-${PWD##*/} \
+tundervirld/ruby-2.6.4:existing-app-rails-5.2
+
+#Entrar en la instancia Docker por ssh
+docker exec -ti docker-instance-${PWD##*/} bash
+```
+
 ### Rails WebApp
 #### Configuraciones y PreRequitos
 Para un proyecto nuevo o existente, es necesario tener en cuenta algunas configuraciones de variables de entorno que puede usar la aplicación. 
 
-##### 1 Crear Carpeta de proyecto
+##### 1.- Crear Carpeta de proyecto
 Se debe crear el Directorio para la aplciación.
 ```sh
 #Se debe crear el directorio en que se quiere guardar la aplicación, para poder hacer referencia como un volumen en la instancia docker mas adelante.
 mkdir [Carpeta Nombre Proyecto]
 ```
-##### 2 Archivo de Variables
+##### 2.- Archivo de Variables
 Dentro del directorio de la aplicación, se debe crear el archivo para las variables de entorno de la aplicación *.env.docker*
 ```sh
 RAILS_ENV=development
@@ -96,7 +144,9 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['MYSQLDB_DATABASE_NAME'] %>_production  
+  database: <%= ENV['MYSQLDB_DATABASE_NAME'] %>_production
+  username: <%= ENV['MYSQLDB_USER'] %>
+  password: <%= ENV['MYSQLDB_PASSWORD'] %>
 ```
 
 #### 4 Lenvatar una instancia Docker con mi aplicación
