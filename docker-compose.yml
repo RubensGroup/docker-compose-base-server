@@ -11,7 +11,7 @@ services:
     volumes:
       - ./mysqldb-data:/var/lib/mysql
     networks:
-      - backennetwork
+      - base-server-network
   mongodb:
     image: 'bitnami/mongodb:latest'
     restart: always
@@ -23,7 +23,7 @@ services:
     volumes:
       - ./mongodb-data:/bitnami
     networks:
-      - backennetwork
+      - base-server-network
   redis:
     image: 'bitnami/redis:latest'
     restart: always
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./redisdb-data:/bitnami
     networks:
-      - backennetwork
+      - base-server-network
 
 networks:
-  backennetwork:
+  base-server-network:
