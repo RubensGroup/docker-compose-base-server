@@ -1,14 +1,14 @@
 ## Entorno para creación de ambiente de desarrollo
 Esta configuración básica de Docker Compose, es para crear una batería de servidores de Bases de Datos Mysql, Redis, Mongo.
 
-**Nota:** Asegurarse que los archivos .sh que están en /config, tienen permisos de ejecución `chmod 755`.
-
 ### Bases de Datos
 ####  Mysql, Redis, Mongo.
 Para levantar la batearía de servidores del docker-compose:
 ```
 #construir las imagenes de los motores de BD
 docker-compose build
+#levantar todos los servidores como `demon`
+
 docker-compose up -d
 ```
 #####  Mysql
@@ -44,23 +44,30 @@ docker network prune
 docker network ls
 docker network inspect ${PWD##*/}_base-server-network
 ```
-** Troubleshootin **
+**Troubleshootin**
 Otros Comandos útiles de docker-compose
 ```
 #docker-compose run [service name] bash
 docker-compose run mongodb bash
 
-#docker-compose --verbose up [service name] bash
+#docker-compose --verbose up [service name]
 docker-compose --verbose up mongodb
 docker-compose logs -f --tail 1000 app
-
 ```
 
-Son muy usado tambien los comandos docker, por lo que se recomienda hacer un alias.
+Son muy usados tambien los comandos docker, por lo que se recomienda hacer un alias.
 ```
 dockerclean='docker rm `docker ps -aq -f status=exited`'
 dockerpurgeimages='docker rmi $(docker images -q)'
 dockerstopclean='docker stop $(docker ps -a -q) | docker rm $(docker ps -a -q)'
+```
+Revisar configuraciones de Docker, para setear usuario, email, etc.
+```
+git config --list
+#ejemplo para setear a nivel de todos el SO
+git config [--global] user.name "Nombre Apellido"
+#configuración de correo, solamente para este repositorio
+git config user.email "reocomboysgm@gmail.com"
 ```
 
 ###### Referencias:
