@@ -5,10 +5,13 @@ Esta configuración básica de Docker Compose, es para crear una batería de ser
 ####  Mysql, Redis, Mongo.
 Para levantar la batearía de servidores del docker-compose:
 ```
+#descargar las imágenes
+docker-compose pull
+
 #construir las imagenes de los motores de BD
 docker-compose build
-#levantar todos los servidores como `demon`
 
+#levantar todos los servidores como `demon`
 docker-compose up -d
 ```
 #####  Mysql
